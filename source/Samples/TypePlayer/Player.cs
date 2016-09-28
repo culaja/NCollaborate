@@ -1,6 +1,6 @@
 namespace Samples.TypePlayer
 {
-    public class Player
+    public class Player : IPlayer
     {
         private readonly ITypeHolder _typeHolder;
 
@@ -9,7 +9,7 @@ namespace Samples.TypePlayer
             _typeHolder = typeHolder;
         }
 
-        public PlayerState State { get; internal set; }
+        public PlayerState State { get; set; }
 
         public void Play()
         {

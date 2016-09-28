@@ -1,6 +1,7 @@
-﻿using NSubstitute;
+﻿using NCollaborate.Session;
+using NSubstitute;
 using NUnit.Framework;
-using Samples.TypePlayer.CollaborateLogic;
+using Samples.NUnitIntegration;
 using Samples.TypePlayer.CollaborateLogic;
 
 namespace Samples.TypePlayer
@@ -9,6 +10,8 @@ namespace Samples.TypePlayer
     public class PlayerTests
     {
         private readonly ITypeHolder _typeHolderStub = Substitute.For<ITypeHolder>();
+
+        private ISutSession _sutSession = new SutSession();
 
         [Test]
         public void Constructor_ObjectCreated_StateSetToStopped()
@@ -289,14 +292,14 @@ namespace Samples.TypePlayer
             typeMock.Received().Stop();
         }
 
-        private Player CreatePlayer()
+        private IPlayer CreatePlayer()
         {
-            return new Player(_typeHolderStub);
+            return new PlayerSutController(new Player(_typeHolderStub), _sutSession);
         }
 
         private IType CreateTypeSubstituteAndDecorateItWithCollector()
         {
-            return new TypeCollector(Substitute.For<IType>());
+            return new TypeCollector(Substitute.For<IType>(), new NUnitTestSession(), _sutSession);
         }
     }
 }

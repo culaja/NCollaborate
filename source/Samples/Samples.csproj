@@ -48,9 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NUnitIntegration\NUnitTestSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypePlayer\CollaborateLogic\PlayerSutController.cs" />
     <Compile Include="TypePlayer\CollaborateLogic\TypeCollecorExtensions.cs" />
     <Compile Include="TypePlayer\CollaborateLogic\TypeCollector.cs" />
+    <Compile Include="TypePlayer\IPlayer.cs" />
     <Compile Include="TypePlayer\IType.cs" />
     <Compile Include="TypePlayer\ITypeHolder.cs" />
     <Compile Include="TypePlayer\Player.cs" />
