@@ -1,5 +1,7 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
+using Samples.TypePlayer.CollaborateLogic;
+using Samples.TypePlayer.CollaborateLogic;
 
 namespace Samples.TypePlayer
 {
@@ -22,7 +24,7 @@ namespace Samples.TypePlayer
         public void Play_ReadyTypeInPlayer_StateIsPlaying()
         {
             // Arrange
-            var typeStub = Substitute.For<IType>();
+            var typeStub = CreateTypeSubstituteAndDecorateItWithCollector();
             typeStub.Play().Returns(true);
             _typeHolderStub.GetTypeInstance().Returns(typeStub);
 
@@ -38,7 +40,7 @@ namespace Samples.TypePlayer
         public void Play_NonReadyTypeInPlayer_StateIsStopped()
         {
             // Arrange
-            var typeStub = Substitute.For<IType>();
+            var typeStub = CreateTypeSubstituteAndDecorateItWithCollector();
             typeStub.Play().Returns(false);
             _typeHolderStub.GetTypeInstance().Returns(typeStub);
 
@@ -68,7 +70,7 @@ namespace Samples.TypePlayer
         public void Play_StateIsPlaying_TypeNotTriggeredToPlay()
         {
             // Arrange
-            var typeMock = Substitute.For<IType>();
+            var typeMock = CreateTypeSubstituteAndDecorateItWithCollector();
             _typeHolderStub.GetTypeInstance().Returns(typeMock);
             var sut = CreatePlayer();
             sut.State = PlayerState.Playing;
@@ -84,7 +86,7 @@ namespace Samples.TypePlayer
         public void Rewind_StateIsStoppedAndReadyTypeInPlayer_PlayerStateIsRewinding()
         {
             // Arrange
-            var typeStub = Substitute.For<IType>();
+            var typeStub = CreateTypeSubstituteAndDecorateItWithCollector();
             typeStub.Rewind().Returns(true);
             _typeHolderStub.GetTypeInstance().Returns(typeStub);
 
@@ -100,7 +102,7 @@ namespace Samples.TypePlayer
         public void Rewind_StateIsStoppedAndTypeInPlayerCantBeRewined_PlayerStateIsStopped()
         {
             // Arrange
-            var typeStub = Substitute.For<IType>();
+            var typeStub = CreateTypeSubstituteAndDecorateItWithCollector();
             typeStub.Rewind().Returns(false);
             _typeHolderStub.GetTypeInstance().Returns(typeStub);
 
@@ -130,7 +132,7 @@ namespace Samples.TypePlayer
         public void Rewind_TypeIsRewindig_TypeNotTriggeredToRewind()
         {
             // Arrange
-            var typeMock = Substitute.For<IType>();
+            var typeMock = CreateTypeSubstituteAndDecorateItWithCollector();
             _typeHolderStub.GetTypeInstance().Returns(typeMock);
             var sut = CreatePlayer();
             sut.State = PlayerState.Rewinding;
@@ -146,7 +148,7 @@ namespace Samples.TypePlayer
         public void Stop_StateIsPlaying_StateChangedToStop()
         {
             // Arrange
-            var typeStub = Substitute.For<IType>();
+            var typeStub = CreateTypeSubstituteAndDecorateItWithCollector();
             typeStub.Play().Returns(true);
             _typeHolderStub.GetTypeInstance().Returns(typeStub);
             var sut = CreatePlayer();
@@ -163,7 +165,7 @@ namespace Samples.TypePlayer
         public void Stop_StateIsPlaying_TypeStopTriggered()
         {
             // Arrange
-            var typeMock = Substitute.For<IType>();
+            var typeMock = CreateTypeSubstituteAndDecorateItWithCollector();
             _typeHolderStub.GetTypeInstance().Returns(typeMock);
             var sut = CreatePlayer();
             sut.State = PlayerState.Playing;
@@ -193,7 +195,7 @@ namespace Samples.TypePlayer
         public void Play_TypeIsRewinding_StateChangedToStop()
         {
             // Arrange
-            var typeStub = Substitute.For<IType>();
+            var typeStub = CreateTypeSubstituteAndDecorateItWithCollector();
             typeStub.Rewind().Returns(true);
             _typeHolderStub.GetTypeInstance().Returns(typeStub);
             var sut = CreatePlayer();
@@ -210,7 +212,7 @@ namespace Samples.TypePlayer
         public void Play_TypeIsRewinding_TypePlayNotTriggered()
         {
             // Arrange
-            var typeMock = Substitute.For<IType>();
+            var typeMock = CreateTypeSubstituteAndDecorateItWithCollector();
             _typeHolderStub.GetTypeInstance().Returns(typeMock);
             var sut = CreatePlayer();
             sut.State = PlayerState.Rewinding;
@@ -226,7 +228,7 @@ namespace Samples.TypePlayer
         public void Play_TypeIsRewinding_TypeStopCalled()
         {
             // Arrange
-            var typeMock = Substitute.For<IType>();
+            var typeMock = CreateTypeSubstituteAndDecorateItWithCollector();
             _typeHolderStub.GetTypeInstance().Returns(typeMock);
             var sut = CreatePlayer();
             sut.State = PlayerState.Rewinding;
@@ -242,7 +244,7 @@ namespace Samples.TypePlayer
         public void Rewind_TypeIsPlaying_StateChangedToStop()
         {
             // Arrange
-            var typeStub = Substitute.For<IType>();
+            var typeStub = CreateTypeSubstituteAndDecorateItWithCollector();
             typeStub.Play().Returns(true);
             _typeHolderStub.GetTypeInstance().Returns(typeStub);
             var sut = CreatePlayer();
@@ -259,7 +261,7 @@ namespace Samples.TypePlayer
         public void Rewind_TypeIsPlaying_TypeRewindNotTriggered()
         {
             // Arrange
-            var typeMock = Substitute.For<IType>();
+            var typeMock = CreateTypeSubstituteAndDecorateItWithCollector();
             _typeHolderStub.GetTypeInstance().Returns(typeMock);
             var sut = CreatePlayer();
             sut.State = PlayerState.Playing;
@@ -275,7 +277,7 @@ namespace Samples.TypePlayer
         public void Rewind_TypeIsPlaying_TypeStopCalled()
         {
             // Arrange
-            var typeMock = Substitute.For<IType>();
+            var typeMock = CreateTypeSubstituteAndDecorateItWithCollector();
             _typeHolderStub.GetTypeInstance().Returns(typeMock);
             var sut = CreatePlayer();
             sut.State = PlayerState.Playing;
@@ -290,6 +292,11 @@ namespace Samples.TypePlayer
         private Player CreatePlayer()
         {
             return new Player(_typeHolderStub);
+        }
+
+        private IType CreateTypeSubstituteAndDecorateItWithCollector()
+        {
+            return new TypeCollector(Substitute.For<IType>());
         }
     }
 }
